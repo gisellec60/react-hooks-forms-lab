@@ -7,11 +7,8 @@ import { v4 as uuid } from "uuid";
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchItem, setSearchItem] = useState([])
-  const [itemArray, setItemArray] = useState(items)
-  const [categorySelection, setCategorySelection] = useState("Produce")
-  const [addItem, setAddItem] = useState([])
-  
-  
+  const [newItems, setNewItems] = useState([])
+   
   function handleCategoryChange(event) {
     setSelectedCategory(event.target.value);
    }
@@ -20,43 +17,22 @@ function ShoppingList({ items }) {
     setSearchItem(event.target.value);
    }
  
-  const itemsToDisplay = items.filter((item) => {
+  let itemsToDisplay = items.filter((item) => {
       if (searchItem.length !== 0 ) {
-        console.log("are you here")
         return item.name === searchItem
-      }else{
+      } else{
         if (selectedCategory === "All") return true
         return item.category === selectedCategory
     };
   })
-
-  function handleAddItemCategory(event) {
-    setCategorySelection(event.target.value);
-    console.log("this is new category", categorySelection)
-  }
-
-  function handleAddItem (e) {
-    setAddItem(e.target.value)
-    console.log("this is new item", addItem)
-  }
-
-  function handleOnSubmit (e) {
-    e.preventDefault()
-    const newItem = {
-      "id":uuid(),
-      "name":addItem,
-      "category":categorySelection,
-   }
-    console.log("this is new item",newItem)
-    setItemArray([...itemArray, newItem])
-    console.log("this is new array", itemArray)
-  }
- 
+   
+  function onItemFormSubmit (newItem) {
+     setNewItems(...items,newItem)
+ }
+  
   return (
     <div className="ShoppingList">
-      <ItemForm onItemFormSubmit={handleOnSubmit} 
-      additem={addItem} categorySelection={categorySelection} 
-      onChangeCategory={handleAddItemCategory} onAddItem={handleAddItem}/>
+      <ItemForm onItemFormSubmit={onItemFormSubmit}  />
 
       <Filter onCategoryChange={handleCategoryChange} onSearchChange={handleItemSearch} 
       searchItem={searchItem} />
