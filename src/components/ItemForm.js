@@ -21,7 +21,6 @@ function ItemForm({onItemFormSubmit}) {
       name:addItem,
       category:categorySelection,
     }
-    console.log("this is new item",newItem)
     onItemFormSubmit(newItem)
   }
 
